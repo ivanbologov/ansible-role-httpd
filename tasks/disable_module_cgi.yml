@@ -1,0 +1,23 @@
+# disable /etc/httpd/conf.modules.d/01-cgi.conf
+---
+
+- name: copy cgi modules config with disabled postfix
+  copy:
+    src: {{ httpd_01_cgi_module }}
+    dst: "{{ httpd_01_cgi_module }}.disabled"
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: remove original cgi modules config
+  file:
+    path: {{ httpd_01_cgi_module }}
+    state: absent
+    
+- name: create empty cgi modules config
+    file:
+      path: {{ httpd_01_cgi_module }}
+      state: touch
+      owner: root
+      group: root
+      mode: 0644

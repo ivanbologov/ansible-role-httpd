@@ -13,7 +13,46 @@
     state: present
   with_items: "{{ httpd_packages }}"
   tags: httpd
+  
+- name: Add sites available directory
+  file:
+    path: {{ httpd_sites_available_dir }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    #recurse: yes
+  tags: httpd
 
+- name: Add sites enabled directory
+  file:
+    path: {{ httpd_sites_enabled_dir }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    #recurse: yes
+  tags: httpd 
+
+- name: disable welcome conf
+  include_tasks: disable_welcome_conf.yml
+  notify: restart httpd
+  tags: httpd
+
+- name: disable legacy modules
+  replace:
+    path: {{ httpd_00_base_module }}
+    regexp: "(^LoadModule[ _a-z]*(/{{ item.mod }}.so)$)"
+    replace: "# \1"
+    with_items: {{ httpd_00_base_modules_to_disable }}
+  notify: restart httpd
+  tags: httpd    
+  
+- name: disable cgi modules config
+  include_tasks: disable_module_cgi.yml
+  notify: restart httpd
+  tags: httpd
+      
 - name: Install main configuration file
   template:
     src: httpd.conf.j2
@@ -24,6 +63,28 @@
     mode: '0644'
   notify: restart httpd
   tags: httpd
+  
+- name: Install additional security configuration file
+  template:
+    src: etc_httpd_conf.d_01-security.conf.j2
+    dest: "{{ httpd_01_security_config }}"
+    owner: root
+    group: root
+    setype: httpd_config_t
+    mode: '0644'
+  notify: restart httpd
+  tags: httpd
+  
+- name: Install additional usability configuration file
+  template:
+    src: etc_httpd_conf.d_02-usability.conf.j2
+    dest: "{{ httpd_02_usability_config }}"
+    owner: root
+    group: root
+    setype: httpd_config_t
+    mode: '0644'
+  notify: restart httpd
+  tags: httpd  
 
 - name: Install status configuration file
   template:

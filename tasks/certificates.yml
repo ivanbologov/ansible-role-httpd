@@ -15,7 +15,19 @@
     httpd_ssl_certificate_file == 'localhost.crt'
     and not ssl_cert_file.stat.exists
   tags: httpd
-
+  
+-name: Generate custom self signed certificate
+  command: '/usr/bin/openssl req -x509 -nodes -days {{ cert_self_days }} -newkey rsa:2048 -keyout {{ cert_self_private_path }} -out {{ cert_self_cert_path }} -subj "/emailAddress={{ cert_self_email }}/C={{ cert_self_country }}/ST={{ cert_self_state }}/L={{ cert_self_city }}/O={{ cert_self_company }}/OU={{ cert_self_ou }}/CN={{ cert_self_sitename }}"'
+  tags: httpd
+  
+-name: Generate custom DH
+  command: '/usr/bin/openssl dhparam -out {{ cert_self_dh_path }} 2048'
+  tags: httpd
+  
+-name: Concatenate self signed certificate with custom DH
+  command: 'cat {{ cert_self_dh_path }} | tee -a {{ cert_self_cert_path }}'
+  tags: httpd
+  
 - name: Copy user defined key file
   copy:
     src: "{{ httpd_ssl_certificate_key_file }}"

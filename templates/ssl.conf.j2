@@ -50,6 +50,12 @@ CustomLog logs/ssl_request_log \
 
 # SSL Configuration
 # see https://mozilla.github.io/server-side-tls/ssl-config-generator/
+#
+# my config based on those materials:
+# https://cipherli.st/
+# https://raymii.org/s/tutorials/Strong_SSL_Security_On_Apache2.html
+# https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-centos-7
+
 SSLProtocol {{ httpd_ssl_protocol }}
 SSLCipherSuite {{ httpd_ssl_cipher_suite }}
 SSLHonorCipherOrder {{ httpd_ssl_honor_cipher_order }}
@@ -61,4 +67,3 @@ SSLUseStapling {{ httpd_ssl_use_stapling }}
 SSLStaplingResponderTimeout {{ httpd_ssl_stapling_responder_timeout }}
 SSLStaplingReturnResponderErrors {{ httpd_ssl_stapling_return_responder_errors }}
 SSLStaplingCache {{ httpd_ssl_stapling_cache }}
-

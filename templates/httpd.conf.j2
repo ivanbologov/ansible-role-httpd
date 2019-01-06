@@ -17,7 +17,8 @@ ServerAdmin {{ httpd_server_admin }}
 ServerName {{ httpd_server_name }}
 {% endif %}
 
-ServerTokens {{ httpd_server_tokens }}
+# it's now at conf.d/01-security.conf
+#ServerTokens {{ httpd_server_tokens }}
 
 # Deny access to the entirety of your server's filesystem.
 <Directory />
@@ -96,5 +97,8 @@ EnableSendfile on
 
 # Supplemental configuration
 IncludeOptional conf.d/*.conf
+
+# Supplemental virtualhosts configurations
+IncludeOptional sites-enabled/*.conf
 
 # vim: ft=apache
