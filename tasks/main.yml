@@ -16,7 +16,7 @@
   
 - name: Add sites available directory
   file:
-    path: {{ httpd_sites_available_dir }}
+    path: "{{ httpd_sites_available_dir }}"
     state: directory
     owner: root
     group: root
@@ -26,7 +26,7 @@
 
 - name: Add sites enabled directory
   file:
-    path: {{ httpd_sites_enabled_dir }}
+    path: "{{ httpd_sites_enabled_dir }}"
     state: directory
     owner: root
     group: root
@@ -41,10 +41,10 @@
 
 - name: disable legacy modules
   replace:
-    path: {{ httpd_00_base_module }}
+    path: "{{ httpd_00_base_module }}"
     regexp: "(^LoadModule[ _a-z]*(/{{ item.mod }}.so)$)"
-    replace: "# \1"
-    with_items: {{ httpd_00_base_modules_to_disable }}
+    replace: '# \1'
+    with_items: "{{ httpd_00_base_modules_to_disable }}"
   notify: restart httpd
   tags: httpd    
   

@@ -25,7 +25,7 @@ cert_self_city: 'Moscow'
 # Organization Name (eg, company) [Default Company Ltd]
 cert_self_company: 'example Ltd'
 # Organizational Unit Name (eg, section), for example it could be a companies department
-cert_self_ou:'IT'
+cert_self_ou: 'IT'
 # Common Name (eg, your name or your server's hostname)
 cert_self_sitename: 'example.com'
 
