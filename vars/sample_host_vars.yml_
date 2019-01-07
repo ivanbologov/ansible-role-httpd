@@ -9,7 +9,8 @@ common_package:
 # 10 years, don't set just a year, it's very short period)
 cert_self_days: 3650
 # private key
-cert_self_private_path: '/etc/ssl/private/apache-selfsigned.key'
+# redhat centos specific
+cert_self_private_path: '/etc/pki/tls/private/apache-selfsigned.key'
 # public key
 cert_self_cert_path: '/etc/ssl/certs/apache-selfsigned.crt'
 

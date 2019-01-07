@@ -6,7 +6,6 @@ httpd_packages:
   - httpd
   - mod_ssl
   - openssl   # for ssl self-signed certs generation
-  - tee
 
 httpd_config: /etc/httpd/conf/httpd.conf
 httpd_sites_available_dir: /etc/httpd/sites-available
@@ -16,6 +15,7 @@ httpd_status_config: /etc/httpd/conf.d/status.conf
 httpd_01_security_config: /etc/httpd/conf.d/01-security.conf
 httpd_02_usability_config: /etc/httpd/conf.d/02-usability.conf
 httpd_welcome_config: /etc/httpd/conf.d/welcome.conf
+httpd_autoindex_config: /etc/httpd/conf.d/autoindex.conf
 httpd_00_base_module: /etc/httpd/conf.modules.d/00-base.conf
 httpd_01_cgi_module: /etc/httpd/conf.modules.d/01-cgi.conf
 

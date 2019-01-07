@@ -19,8 +19,8 @@ httpd_server_root: '/etc/httpd'
 #httpd_server_tokens: Prod
 #dev
 httpd_server_tokens: Full
-httpd_server_signature: Off
-httpd_keep_alive: On
+httpd_server_signature: 'Off'
+httpd_keep_alive: 'On'
 httpd_ssl_certificate_file: localhost.crt
 httpd_ssl_certificate_key_file: localhost.key
 httpd_status_enable: false

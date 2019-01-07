@@ -34,24 +34,26 @@
     #recurse: yes
   tags: httpd 
 
-- name: disable welcome conf
-  include_tasks: disable_welcome_conf.yml
+#TODO disabling configs in variables should be
+- name: disable configs and modules fully
+  include_tasks: disable_config.yml
+  with_items:
+    - "{{ httpd_welcome_config }}"
+    - "{{ httpd_autoindex_config }}"
+    - "{{ httpd_01_cgi_module }}"
+  loop_control:
+    loop_var: disabling_config
   notify: restart httpd
   tags: httpd
 
 - name: disable legacy modules
   replace:
     path: "{{ httpd_00_base_module }}"
-    regexp: "(^LoadModule[ _a-z]*(/{{ item.mod }}.so)$)"
+    regexp: '(^LoadModule[ _a-z]*(/{{ item }}\.so)$)'
     replace: '# \1'
-    with_items: "{{ httpd_00_base_modules_to_disable }}"
+  with_items: "{{ httpd_00_base_modules_to_disable }}"
   notify: restart httpd
-  tags: httpd    
-  
-- name: disable cgi modules config
-  include_tasks: disable_module_cgi.yml
-  notify: restart httpd
-  tags: httpd
+  tags: httpd  
       
 - name: Install main configuration file
   template:
