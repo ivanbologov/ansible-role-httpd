@@ -34,13 +34,9 @@
     #recurse: yes
   tags: httpd 
 
-#TODO disabling configs in variables should be
 - name: disable configs and modules fully
   include_tasks: disable_config.yml
-  with_items:
-    - "{{ httpd_welcome_config }}"
-    - "{{ httpd_autoindex_config }}"
-    - "{{ httpd_01_cgi_module }}"
+  with_items: "{{ httpd_confs_to_disable }}"
   loop_control:
     loop_var: disabling_config
   notify: restart httpd

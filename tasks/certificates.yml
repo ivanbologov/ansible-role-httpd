@@ -32,7 +32,7 @@
   command: '/usr/bin/openssl req -x509 -nodes -days {{ cert_self_days }} -newkey rsa:2048 -keyout {{ cert_self_private_path }} -out {{ cert_self_cert_path }} -subj "/emailAddress={{ cert_self_email }}/C={{ cert_self_country }}/ST={{ cert_self_state }}/L={{ cert_self_city }}/O={{ cert_self_company }}/OU={{ cert_self_ou }}/CN={{ cert_self_sitename }}"'
   when: >
     not cert_self.stat.exists
-    and cert_self_private.stat.exists
+    and not cert_self_private.stat.exists
   tags: httpd
   
 - name: Check is already generated DH params
@@ -57,6 +57,22 @@
   shell: cat {{ cert_self_dh_path|quote }} | sudo tee -a {{ cert_self_cert_path|quote }}
   when: check_cert_self.rc != 0
   tags: httpd
+  
+#
+#При таком написании краснеть будет во второй и последующий запуск т.к. конкат уже произойдет
+#- name: Check do we need to concat dh params in self signed cert return error if need to concat
+#  shell: '! /bin/egrep -cq "DH PARAMETERS" {{ cert_self_cert_path }}'
+#  register: check_cert_self
+#  check_mode: no
+#  ignore_errors: yes
+#  changed_when: no
+#
+#- name: Concatenate self signed certificate with custom DH
+#  shell: cat {{ cert_self_dh_path|quote }} | sudo tee -a {{ cert_self_cert_path|quote }}
+#  when: check_cert_self.rc == 0
+#  tags: httpd
+#
+  
   
 - name: Copy user defined key file
   copy:

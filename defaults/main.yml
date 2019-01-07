@@ -49,6 +49,11 @@ httpd_ssl_stapling_cache: 'shmcb:/var/run/ocsp(128000)'
 #httpd_ssl_stapling_cache: 'shmcb:logs/stapling-cache(150000)'
 httpd_ssl_use_stapling: 'on'
 
+httpd_confs_to_disable:
+    - "{{ httpd_welcome_config }}"
+    - "{{ httpd_autoindex_config }}"
+    - "{{ httpd_01_cgi_module }}"
+
 httpd_00_base_modules_to_disable:
   - 'mod_include'
   - 'mod_info'
